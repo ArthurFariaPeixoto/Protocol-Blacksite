@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class mouse_look : MonoBehaviour
+public class MouseLook : MonoBehaviour
 {
     //Valor de sensibilidade da camera
-    public float sensitivity = 2f;
+    public float sensitivity = 1f;
 
     //Valor do efeito de smooth
-    public float smoothing = 0.5f;
+    public float smoothing = 1f;
 
     //Posicao do mouse
     private float posMouseX;

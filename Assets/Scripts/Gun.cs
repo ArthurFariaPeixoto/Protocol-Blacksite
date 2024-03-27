@@ -64,6 +64,10 @@ public class Gun : MonoBehaviour
 
     private void Fire()
     {
+        //Som para tiro
+        GetComponent<AudioSource>().Stop();
+        GetComponent<AudioSource>().Play();
+
         //aplica dano em todos os inimigos em range
         foreach (var enemy in enemyManager.enemiesInRange)
         {

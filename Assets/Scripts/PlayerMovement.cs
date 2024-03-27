@@ -75,7 +75,6 @@ public class PlayerMovement : MonoBehaviour
             inputPositionPlayer = new Vector3(Input.GetAxisRaw("Horizontal"), 0f, Input.GetAxisRaw("Vertical"));
             inputPositionPlayer.Normalize();
             inputPositionPlayer = transform.TransformDirection(inputPositionPlayer);
-
             isWalking = true;
         }
         else

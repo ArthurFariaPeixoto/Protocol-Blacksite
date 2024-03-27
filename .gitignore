@@ -6,3 +6,6 @@
 
 Assembly-CSharp.csproj
 Protocol Blacksite.sln
+
+.NETFramework,Version=v4.7.1.AssemblyAttributes.cs
+Assembly-CSharp.csproj.AssemblyReference.cache

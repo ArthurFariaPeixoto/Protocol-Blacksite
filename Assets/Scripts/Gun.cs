@@ -10,10 +10,13 @@ public class Gun : MonoBehaviour
     //Alcance vertical da arma
     public float verticalRange = 20f;
 
-    // fire rate kkkkkkkk
-    public float fireRate;
+    public float gunShotRadius = 20f;
 
+    //dano do tiro
     public float damage = 1f;
+
+    // fire rate kkkkkkkk
+    public float fireRate = 0.3f;
 
     // variavel para evitar spam de tiros
     private float nextTimeToFire;
@@ -21,8 +24,10 @@ public class Gun : MonoBehaviour
     //Box Collider da arma para verificar se existe algum inimigo no range
     private BoxCollider gunTrigger;
 
-    public LayerMask raycastLayerMask;
     public EnemyManager enemyManager;
+
+    public LayerMask raycastLayerMask;
+    public LayerMask enemyLayerMask;
 
     void Start()
     {
@@ -64,9 +69,18 @@ public class Gun : MonoBehaviour
 
     private void Fire()
     {
+        Collider[] enemyColliders;
+        enemyColliders = Physics.OverlapSphere(transform.position, gunShotRadius, enemyLayerMask);
+
+        foreach (var enemyCollider in enemyColliders)
+        {
+            enemyCollider.GetComponent<EnemyAwareness>().isAggro = true;
+        }
+
         //Som para tiro
         GetComponent<AudioSource>().Stop();
         GetComponent<AudioSource>().Play();
+
 
         //aplica dano em todos os inimigos em range
         foreach (var enemy in enemyManager.enemiesInRange)

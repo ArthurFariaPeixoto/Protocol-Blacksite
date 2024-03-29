@@ -29,31 +29,25 @@ public class PlayerHealth : MonoBehaviour
 
     public void DamagePlayer(int damage)
     {
+        int remainingDamage = damage;
         if (armor > 0)
         {
             if (armor >= damage)
             {
                 armor -= damage;
+                remainingDamage = 0;
             }
-            else if (armor < damage)
+            else
             {
-                int remainingDamage;
-                remainingDamage = damage - armor;
+                remainingDamage -= armor;
                 armor = 0;
-                health -= remainingDamage;
             }
         }
-        else
-        {
-            health -= damage;
-        }
-
+        health -= remainingDamage;
+        health = Mathf.Max(0, health); // Garante que a saúde não seja negativa
         if (health <= 0)
         {
-            health = 0;
-            Scene currentScene = SceneManager.GetActiveScene();
-            SceneManager.LoadScene(currentScene.buildIndex);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); // Reload scene directly
         }
-
     }
 }

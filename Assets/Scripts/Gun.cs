@@ -69,39 +69,35 @@ public class Gun : MonoBehaviour
 
     private void Fire()
     {
-        Collider[] enemyColliders;
-        enemyColliders = Physics.OverlapSphere(transform.position, gunShotRadius, enemyLayerMask);
-
+        // Ativa a agressividade dos inimigos próximos
+        Collider[] enemyColliders = Physics.OverlapSphere(transform.position, gunShotRadius, enemyLayerMask);
         foreach (var enemyCollider in enemyColliders)
         {
-            enemyCollider.GetComponent<EnemyAwareness>().isAggro = true;
-        }
-
-        //Som para tiro
-        GetComponent<AudioSource>().Stop();
-        GetComponent<AudioSource>().Play();
-
-
-        //aplica dano em todos os inimigos em range
-        foreach (var enemy in enemyManager.enemiesInRange)
-        {
-            //RayCast para evitar de tiros passarem por paredes
-            var dir = enemy.transform.position - transform.position;
-            RaycastHit hit;
-            if (Physics.Raycast(transform.position, dir, out hit, range * 1.5f, raycastLayerMask))
+            EnemyAwareness enemyAwareness = enemyCollider.GetComponent<EnemyAwareness>();
+            if (enemyAwareness != null)
             {
-                if (hit.transform == enemy.transform)
-                {
-                    enemy.TakeDamage(damage);
-
-                    //DEBUG PARA VER RAYCAST
-                    // Debug.DrawRay(transform.position, dir, Color.blue);
-                    // Debug.Break();
-                }
+                enemyAwareness.isAggro = true;
             }
         }
-
-        //reseta o timer em que o jogador pode atirar novamente
+        // Reproduz o som de tiro
+        if (TryGetComponent(out AudioSource audioSource))
+        {
+            audioSource.Stop();
+            audioSource.Play();
+        }
+        // Aplica dano a todos os inimigos em alcance
+        foreach (var enemy in enemyManager.enemiesInRange)
+        {
+            Vector3 dir = enemy.transform.position - transform.position;
+            if (Physics.Raycast(transform.position, dir, out RaycastHit hit, range * 1.5f, raycastLayerMask) && hit.transform == enemy.transform)
+            {
+                enemy.TakeDamage(damage);
+                // DEBUG: Desenhar raio para depuração
+                // Debug.DrawRay(transform.position, dir, Color.blue);
+                // Debug.Break();
+            }
+        }
+        // Reseta o temporizador para o próximo disparo
         nextTimeToFire = Time.time + fireRate;
     }
 }

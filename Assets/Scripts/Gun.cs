@@ -21,6 +21,9 @@ public class Gun : MonoBehaviour
     // variavel para evitar spam de tiros
     private float nextTimeToFire;
 
+    public int ammoAmount;
+    public int MaxAmmoAmount;
+
     //Box Collider da arma para verificar se existe algum inimigo no range
     private BoxCollider gunTrigger;
 
@@ -39,7 +42,7 @@ public class Gun : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && Time.time > nextTimeToFire)
+        if (Input.GetMouseButtonDown(0) && Time.time > nextTimeToFire && ammoAmount > 0)
         {
             Fire();
         }
@@ -99,5 +102,22 @@ public class Gun : MonoBehaviour
         }
         // Reseta o temporizador para o próximo disparo
         nextTimeToFire = Time.time + fireRate;
+
+        ammoAmount--;
     }
+
+    public void GiveAmmo(int amount, GameObject pickup)
+    {
+        if (ammoAmount < MaxAmmoAmount)
+        {
+            ammoAmount += amount;
+            Destroy(pickup);
+        }
+        if (ammoAmount > MaxAmmoAmount)
+        {
+            ammoAmount = MaxAmmoAmount;
+        }
+    }
+
+
 }

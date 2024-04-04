@@ -14,7 +14,6 @@ public class PlayerHealth : MonoBehaviour
     void Start()
     {
         health = maxHealth;
-        armor = maxArmor;
     }
 
 
@@ -50,4 +49,32 @@ public class PlayerHealth : MonoBehaviour
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); // Reload scene directly
         }
     }
+
+    public void GiveHealth(int amount, GameObject pickup)
+    {
+        if (health < maxHealth)
+        {
+            health += amount;
+            Destroy(pickup);
+        }
+        if (health > maxHealth)
+        {
+            health = maxHealth;
+        }
+
+    }
+    public void GiveArmor(int amount, GameObject pickup)
+    {
+
+        if (armor < maxArmor)
+        {
+            armor += amount;
+            Destroy(pickup);
+        }
+        if (armor > maxArmor)
+        {
+            armor = maxArmor;
+        }
+    }
+
 }
